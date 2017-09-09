@@ -7,7 +7,6 @@ class Book extends Component {
     event.preventDefault();
     this.props.book.shelf = event.target.value;
     BooksAPI.update(this.props.book, event.target.value).then(response => {
-      console.log(response);
       this.props.refreshBooks();
     });
   };
