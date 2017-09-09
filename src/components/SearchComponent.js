@@ -8,13 +8,37 @@ class SearchComponent extends Component {
     books: [],
     query: ""
   };
+
   onUpdateQuery = event => {
     this.setState({ query: event.target.value });
-    BooksAPI.search(event.target.value, 20).then(books => {
-      this.setState({ books });
-      console.log(books);
+    if (event.target.value.length > 0) {
+      this.searchBooks(event.target.value);
+    }
+  };
+
+  searchBooks = query => {
+    BooksAPI.search(query, 20).then(books => {
+      if (books && books.length > 0) {
+        this.setState({ books: this.completeUserBooks(books) });
+      }
     });
   };
+
+  completeUserBooks = books => {
+    const completeBooks = books.reduce((completeBooks, book) => {
+      let existingBook = this.props.userBooks.find(userBook => {
+        return userBook.id === book.id;
+      });
+      if (existingBook) {
+        book.shelf = existingBook.shelf;
+      }
+      completeBooks.push(book);
+      return completeBooks;
+    }, []);
+
+    return completeBooks;
+  };
+
   render() {
     return (
       <div className="search-books">
@@ -23,14 +47,6 @@ class SearchComponent extends Component {
             Close
           </Link>
           <div className="search-books-input-wrapper">
-            {/*
-                  NOTES: The search from BooksAPI is limited to a particular set of search terms.
-                  You can find these search terms here:
-                  https://github.com/udacity/reactnd-project-myreads-starter/blob/master/SEARCH_TERMS.md
-
-                  However, remember that the BooksAPI.search method DOES search by title or author. So, don't worry if
-                  you don't find a specific author or title. Every search is limited by search terms.
-                */}
             <input
               type="text"
               onChange={this.onUpdateQuery}
@@ -40,7 +56,10 @@ class SearchComponent extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <BookList books={this.state.books} />
+          <BookList
+            books={this.state.books}
+            refreshBooks={this.props.refreshBooks}
+          />
         </div>
       </div>
     );
