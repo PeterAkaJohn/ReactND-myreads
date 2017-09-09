@@ -1,6 +1,6 @@
 import React from "react";
 
-import {Link} from 'react-router-dom';
+import { Link } from "react-router-dom";
 
 export default function homeDecorator(Component) {
   function HomeDecorator(props) {
@@ -15,9 +15,7 @@ export default function homeDecorator(Component) {
           </div>
         </div>
         <div className="open-search">
-          <Link to='/search'>
-            Add a book
-          </Link>
+          <Link to="/search">Add a book</Link>
         </div>
       </div>
     );

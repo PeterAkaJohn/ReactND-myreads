@@ -6,7 +6,9 @@ function BookList(props) {
   return (
     <div className="bookshelf-books">
       <ol className="books-grid">
-        {props.books.map(book => <Book key={book.id} book={book} />)}
+        {props.books.map(book => (
+          <Book key={book.id} book={book} refreshBooks={props.refreshBooks} />
+        ))}
       </ol>
     </div>
   );

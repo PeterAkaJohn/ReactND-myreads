@@ -6,7 +6,10 @@ function BookShelf(props) {
   return (
     <div className="bookshelf">
       <h2 className="bookshelf-title">{props.title}</h2>
-      <BookList books={props.books} />
+      <BookList
+        books={props.books}
+        refreshBooks={props.refreshBooks}
+      />
     </div>
   );
 }
