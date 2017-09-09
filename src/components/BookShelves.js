@@ -1,40 +1,51 @@
-import React, { Component } from "react";
+import React from "react";
 import homeDecorator from "./hoc/homeDecorator";
 import BookShelf from "./BookShelf";
 import PropTypes from "prop-types";
 
-class BookShelves extends Component {
-  render() {
-    const curReading = this.props.userBooks.filter(
-      book => book.shelf === "currentlyReading"
-    );
-    const wantRead = this.props.userBooks.filter(
-      book => book.shelf === "wantToRead"
-    );
-    const read = this.props.userBooks.filter(book => book.shelf === "read");
+function BookShelves(props) {
+  const { currentlyReading, wantToRead, read } = mapBooksObject(
+    props.userBooks
+  );
 
-    return (
-      <div className="list-books-content">
-        <div>
-          <BookShelf
-            books={curReading}
-            title={"Currently Reading"}
-            refreshBooks={this.props.refreshBooks}
-          />
-          <BookShelf
-            books={wantRead}
-            title={"Want to Read"}
-            refreshBooks={this.props.refreshBooks}
-          />
-          <BookShelf
-            books={read}
-            title={"Read"}
-            refreshBooks={this.props.refreshBooks}
-          />
-        </div>
+  return (
+    <div className="list-books-content">
+      <div>
+        <BookShelf
+          books={currentlyReading.books}
+          title={currentlyReading.title}
+          refreshBooks={props.refreshBooks}
+        />
+        <BookShelf
+          books={wantToRead.books}
+          title={wantToRead.title}
+          refreshBooks={props.refreshBooks}
+        />
+        <BookShelf
+          books={read.books}
+          title={"Read"}
+          refreshBooks={props.refreshBooks}
+        />
       </div>
-    );
-  }
+    </div>
+  );
+}
+
+function mapBooksObject(books) {
+  return {
+    currentlyReading: {
+      title: "Currently Reading",
+      books: books.filter(book => book.shelf === "currentlyReading")
+    },
+    wantToRead: {
+      title: "Want To Read",
+      books: books.filter(book => book.shelf === "wantToRead")
+    },
+    read: {
+      title: "Read",
+      books: books.filter(book => book.shelf === "read")
+    }
+  };
 }
 
 BookShelves.propTypes = {
