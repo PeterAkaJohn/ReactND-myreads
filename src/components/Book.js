@@ -1,15 +1,19 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import * as BooksAPI from "../BooksAPI";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import * as BooksAPI from '../BooksAPI';
 
 class Book extends Component {
-  updateBook = event => {
+  constructor() {
+    super();
+    this.updateBook = this.updateBook.bind(this);
+  }
+  updateBook(event) {
     event.preventDefault();
     this.props.book.shelf = event.target.value;
-    BooksAPI.update(this.props.book, event.target.value).then(response => {
+    BooksAPI.update(this.props.book, event.target.value).then(() => {
       this.props.refreshBooks();
     });
-  };
+  }
   render() {
     return (
       <li>
@@ -20,14 +24,11 @@ class Book extends Component {
               style={{
                 width: 128,
                 height: 193,
-                backgroundImage: `url(${this.props.book.imageLinks.thumbnail})`
+                backgroundImage: `url(${this.props.book.imageLinks.thumbnail})`,
               }}
             />
             <div className="book-shelf-changer">
-              <select
-                onChange={this.updateBook}
-                value={this.props.book.shelf || "none"}
-              >
+              <select onChange={this.updateBook} value={this.props.book.shelf || 'none'}>
                 <option value="disabled" disabled>
                   Move to...
                 </option>
@@ -41,9 +42,7 @@ class Book extends Component {
           <div className="book-title">{this.props.book.title}</div>
           <div className="book-authors">
             {this.props.book.authors &&
-              this.props.book.authors.map(author => (
-                <span key={author}>{author}</span>
-              ))}
+              this.props.book.authors.map(author => <span key={author}>{author}</span>)}
           </div>
         </div>
       </li>
@@ -52,7 +51,13 @@ class Book extends Component {
 }
 
 Book.propTypes = {
-  book: PropTypes.object.isRequired
+  book: PropTypes.shape({
+    shelf: PropTypes.string,
+    title: PropTypes.string,
+    authors: PropTypes.arrayOf(PropTypes.object),
+    imageLinks: PropTypes.object,
+  }).isRequired,
+  refreshBooks: PropTypes.func.isRequired,
 };
 
 export default Book;
