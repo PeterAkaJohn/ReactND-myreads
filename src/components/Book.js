@@ -54,7 +54,7 @@ Book.propTypes = {
   book: PropTypes.shape({
     shelf: PropTypes.string,
     title: PropTypes.string,
-    authors: PropTypes.arrayOf(PropTypes.object),
+    authors: PropTypes.arrayOf(PropTypes.string),
     imageLinks: PropTypes.object,
   }).isRequired,
   refreshBooks: PropTypes.func.isRequired,
