@@ -13,5 +13,9 @@ export default function withBooks(Component) {
     userBooks: [],
     books: [],
   };
+  WithBooks.propTypes = {
+    userBooks: PropTypes.arrayOf(PropTypes.object),
+    books: PropTypes.arrayOf(PropTypes.object),
+  };
   return WithBooks;
 }
