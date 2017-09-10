@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Book from './Book';
+import withBooks from './hoc/withBooks';
 
 function BookList(props) {
   return (
@@ -19,4 +20,4 @@ BookList.propTypes = {
   refreshBooks: PropTypes.func.isRequired,
 };
 
-export default BookList;
+export default withBooks(BookList);
